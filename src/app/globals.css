@@ -49,9 +49,9 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
+  --background: #fffcf5;
   --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
+  --card: #ffffff;
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
@@ -127,4 +127,12 @@
   html {
     @apply font-sans;
   }
+}
+
+.shadow-pop {
+  box-shadow: 2px 2px 0 #111;
+}
+
+.shadow-pop:hover {
+  box-shadow: 4px 4px 0 #111;
 }
