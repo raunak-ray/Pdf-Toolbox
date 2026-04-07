@@ -3,7 +3,7 @@ import Link from "next/link"
 
 function Navbar() {
   return (
-    <nav className="w-full bg-white border-b-2 border-black">
+    <nav className="w-full bg-white border-b-2 border-[#e1e7ef] shadow-2xs">
       <div className="max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto flex items-center justify-between px-4 py-3">
 
         {/* LEFT */}

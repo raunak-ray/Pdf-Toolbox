@@ -136,3 +136,9 @@
 .shadow-pop:hover {
   box-shadow: 4px 4px 0 #111;
 }
+
+.dot-pattern {
+  background-size: 20px 20px;
+  background-repeat: repeat;
+  background-image: radial-gradient(circle, #e3e9f0, 1px, transparent 1px);
+}
