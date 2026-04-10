@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import { categories } from "@/lib/constants";
+import Footer from "@/components/Footer";
 
 function page() {
   return (
@@ -188,6 +189,8 @@ function page() {
           ))}
         </div>
       </div>
+
+      <Footer />
     </main>
   );
 }
