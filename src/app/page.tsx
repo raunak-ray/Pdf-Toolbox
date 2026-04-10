@@ -1,8 +1,10 @@
 "use client";
 
 import Navbar from '@/components/Navbar'
-import { Sparkles } from 'lucide-react'
+import { File, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import Link from 'next/link';
 
 function page() {
   return (
@@ -10,7 +12,7 @@ function page() {
       <Navbar />
 
       <div className="flex-1 dot-pattern">
-        <div className="max-w-lg md:max-w-2xl lg:max-w-4xl mx-auto px-4 py-6 md:py-10 relative">
+        <div className="max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto px-4 py-6 md:py-10 relative">
 
           {/* left circle */}
           <motion.div className='hidden md:block bg-emerald-400 rounded-full absolute left-5 top-20 w-8 h-8 shadow-[2px_2px_0px_#111] border-2 border-[#111] opacity-60'
@@ -79,9 +81,58 @@ function page() {
           </motion.svg>
 
         </div>
+
+        <motion.div 
+        initial="hidden"
+        animate="show"
+        variants={{
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: 0.2
+            }
+          }
+        }}
+        className='mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto px-4 py-6 md:py-10 relative'>
+        {['hell', 'hello', 'hellop'].map((item) => (
+          <Link href={"/"} key={item}>
+            <motion.div
+            variants={{
+              hidden: {opacity: 0, y: 40},
+              show: {opacity: 1, y: 0}
+            }}
+            whileHover={{
+              rotate: -3,
+              boxShadow: "8px 8px 0 #111"
+            }}
+            whileTap={{
+              scale: 0.9
+            }}
+            transition={{type: "spring", stiffness: 100, damping: 10}}
+            className='rounded-xl'
+            >
+                <Card className='border-black border-2 shadow-[5px_5px_0_#111]'>
+                <CardHeader>
+                  <div className='bg-pink-400 w-fit p-2 rounded-lg shadow-[3px_3px_0_#111] border-2 border-black'>
+                    <File className='text-white h-5 w-5' strokeWidth={2.5} />
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <h1 className='text-black font-bold text-lg'>Merge Pdf</h1>
+                  <p className='text-gray-600 text-sm font-normal '>Merge your pdf</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </Link>
+        ))}
+        </motion.div>
+
+        
       </div>
+
+
     </main>
   )
 }
 
-export default page
+export default page;
