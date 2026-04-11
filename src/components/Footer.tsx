@@ -1,3 +1,5 @@
+"use client";
+
 import { categories } from "@/lib/constants";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -32,7 +34,7 @@ function Footer() {
             }}
           >
             {/* Category Title */}
-            <h4 className="text-lg font-bold">{category.name}</h4>
+            <h4 className="text-md md:text-lg font-bold">{category.name}</h4>
 
             {/* Links */}
             <motion.div
@@ -59,7 +61,8 @@ function Footer() {
                   }}
                   transition={{ type: "spring", stiffness: 200 }}
                 >
-                  <Link href={tool.path}>{tool.name}</Link>
+                  <Link href={tool.path}
+                  className="text-sm md:text-md">{tool.name}</Link>
                 </motion.div>
               ))}
             </motion.div>
