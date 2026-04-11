@@ -1,12 +1,10 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
-import { File, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import { categories } from "@/lib/constants";
-import Footer from "@/components/Footer";
 
 function page() {
   return (
