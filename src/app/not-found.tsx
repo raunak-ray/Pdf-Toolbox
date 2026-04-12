@@ -8,7 +8,6 @@ export default function NotFound() {
   return (
     <main className="flex-1 dot-pattern flex items-center justify-center px-4">
       <div className="w-full max-w-xl text-center relative">
-
         {/* Minimal decorative elements */}
         <motion.div
           className="hidden md:block bg-yellow-400 rounded-full absolute -top-6 -left-6 w-6 h-6 border-2 border-black shadow-[2px_2px_0_#111]"

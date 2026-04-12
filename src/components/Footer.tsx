@@ -61,8 +61,9 @@ function Footer() {
                   }}
                   transition={{ type: "spring", stiffness: 200 }}
                 >
-                  <Link href={tool.path}
-                  className="text-sm md:text-md">{tool.name}</Link>
+                  <Link href={tool.path} className="text-sm md:text-md">
+                    {tool.name}
+                  </Link>
                 </motion.div>
               ))}
             </motion.div>
