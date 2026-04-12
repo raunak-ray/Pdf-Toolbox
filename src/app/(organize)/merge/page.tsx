@@ -11,12 +11,18 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { mergePdf } from "@/lib/pdfTools";
 import { motion, Reorder } from "framer-motion";
-import { ClosedCaption, Cross, Merge, Upload, X } from "lucide-react";
+import { Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
-import { Document, Page } from "react-pdf";
-import { pdfjs } from "react-pdf";
+import dynamic from "next/dynamic";
 
-pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
+const PdfPreview = dynamic(() => import("@/components/PdfPreview"), {
+  ssr: false, // prevents server-side execution
+  loading: () => (
+    <div className="h-35 flex items-center justify-center text-sm text-gray-500">
+      Loading...
+    </div>
+  ),
+});
 
 const tool = {
   id: "merge",
@@ -28,27 +34,29 @@ const tool = {
 function page() {
   const inputRef = useRef<HTMLInputElement | null>(null);
   // Store object URLs instead of raw File objects
-const [files, setFiles] = useState<{ file: File; url: string }[]>([]);
+  const [files, setFiles] = useState<{ file: File; url: string }[]>([]);
 
-const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  if (!e.target.files) return;
-  const newFiles = Array.from(e.target.files).map((file) => ({
-    file,
-    url: URL.createObjectURL(file), // stable, won't get detached
-  }));
-  setFiles((prev) => [...prev, ...newFiles]);
-};
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const newFiles = Array.from(e.target.files).map((file) => ({
+      file,
+      url: URL.createObjectURL(file), // stable, won't get detached
+    }));
+    setFiles((prev) => [...prev, ...newFiles]);
+  };
 
-const removeFile = (key: string) => {
-  setFiles((prev) => {
-    const removed = prev.find(
-      ({ file }) => `${file.name}-${file.size}-${file.lastModified}` === key
-    );
-    if (removed) URL.revokeObjectURL(removed.url);
-    return prev.filter(({ file }) => `${file.name}-${file.size}-${file.lastModified}` !== key);
-  });
-};
-console.log(files)
+  const removeFile = (key: string) => {
+    setFiles((prev) => {
+      const removed = prev.find(
+        ({ file }) => `${file.name}-${file.size}-${file.lastModified}` === key,
+      );
+      if (removed) URL.revokeObjectURL(removed.url);
+      return prev.filter(
+        ({ file }) => `${file.name}-${file.size}-${file.lastModified}` !== key,
+      );
+    });
+  };
+  console.log(files);
   return (
     <div className="flex-1 dot-pattern">
       <div className="max-w-lg md:max-w-2xl lg:max-w-5xl px-4 py-6 mx-auto">
@@ -123,66 +131,57 @@ console.log(files)
           // animate={{ opacity: 1 }}
         >
           {files.map((item) => {
-            const fileKey = `${item.file.name}-${item.file.size}-${item.file.lastModified}`
-            
-            return(
-            <Reorder.Item
-              value={item}
-              key={fileKey}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              whileHover={{
-                rotate: -2,
-                boxShadow: "6px 6px 0 #111",
-              }}
-              transition={{ duration: 0.3 }}
-              className="border-2 border-black rounded-lg shadow-[4px_4px_0_#111] bg-white p-2 relative"
-            >
-              {/* PDF Preview */}
-              <div className="overflow-hidden rounded-md">
-                <Document
-                  file={item.url}
-                  loading={
-                    <div className="h-35 flex items-center justify-center text-sm text-gray-500">
-                      Loading...
-                    </div>
-                  }
+            const fileKey = `${item.file.name}-${item.file.size}-${item.file.lastModified}`;
+
+            return (
+              <Reorder.Item
+                value={item}
+                key={fileKey}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{
+                  rotate: -2,
+                  boxShadow: "6px 6px 0 #111",
+                }}
+                transition={{ duration: 0.3 }}
+                className="border-2 border-black rounded-lg shadow-[4px_4px_0_#111] bg-white p-2 relative"
+              >
+                {/* PDF Preview */}
+                <div className="overflow-hidden rounded-md cursor-grab">
+                  <PdfPreview url={item.url} />
+                </div>
+
+                <div
+                  className="absolute top-2 right-5 bg-purple-500 p-1 rounded-lg cursor-pointer border-2 border-black shadow-[2px_2px_0_#111]"
+                  onClick={() => removeFile(fileKey)}
                 >
-                  <Page
-                    pageNumber={1}
-                    width={240} // controls size
-                    renderTextLayer={false}
-                    renderAnnotationLayer={false}
-                  />
-                </Document>
-              </div>
+                  <X className="text-white w-4 h-4" strokeWidth={2} />
+                </div>
 
-              <div className="absolute top-2 right-5 bg-purple-500 p-1 rounded-lg cursor-pointer border-2 border-black shadow-[2px_2px_0_#111]" onClick={() => removeFile(fileKey)}>
-                <X className="text-white w-4 h-4" strokeWidth={2}/>
-              </div>
-
-              {/* File Name */}
-              <p className="mt-2 text-xs font-medium text-gray-700 truncate">
-                {item.file.name}
-              </p>
-            </Reorder.Item>
-          )})}
+                {/* File Name */}
+                <p className="mt-2 text-xs font-medium text-gray-700 truncate">
+                  {item.file.name}
+                </p>
+              </Reorder.Item>
+            );
+          })}
         </Reorder.Group>
 
         {files.length > 0 && (
-          <motion.button 
-          className="mt-5 bg-purple-500 font-bold text-white shadow-[5px_5px_0_#111] border-2 border-black px-4 py-2 rounded-lg
+          <motion.button
+            className="mt-5 bg-purple-500 font-bold text-white shadow-[5px_5px_0_#111] border-2 border-black px-4 py-2 rounded-lg
           text-sm md:text-md lg:text-lg w-full md:w-auto cursor-pointer"
-          whileTap={{
-            scale: 0.95
-          }}
-          whileHover={{
-            boxShadow: "6px 6px 0 #111",
-            scale: 1.01,
-            y: -5
-          }}
-          transition={{duration: 0.2}}
-          onClick={() => mergePdf(files.flatMap((item) => item.file))}>
+            whileTap={{
+              scale: 0.95,
+            }}
+            whileHover={{
+              boxShadow: "6px 6px 0 #111",
+              scale: 1.01,
+              y: -5,
+            }}
+            transition={{ duration: 0.2 }}
+            onClick={() => mergePdf(files.flatMap((item) => item.file))}
+          >
             Merge Pdf
           </motion.button>
         )}
