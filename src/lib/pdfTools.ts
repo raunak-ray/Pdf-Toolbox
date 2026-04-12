@@ -18,7 +18,7 @@ export async function mergePdf(files: File[]) {
 
   for (const file of files) {
     const fileBuffer = await file.arrayBuffer();
-    const fileBytes = await PDFDocument.load(fileBuffer);
+    const fileBytes = await PDFDocument.load(fileBuffer, {ignoreEncryption: true});
 
     const copiedPages = await mergedDocument.copyPages(
       fileBytes,
