@@ -9,32 +9,37 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Card, CardContent } from "@/components/ui/card";
-import { rotatePdf } from "@/lib/pdfTools";
+import { addPageNumbers } from "@/lib/pdfTools";
 import { Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
-const PdfPreview = dynamic(() => import("@/components/PdfPreview"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-35 flex items-center justify-center text-sm text-gray-500">
-      Loading...
-    </div>
-  ),
-});
+const PdfPreviewWithNumber = dynamic(
+  () => import("@/components/PdfPreviewWithNumber"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-35 flex items-center justify-center text-sm text-gray-500">
+        Loading...
+      </div>
+    ),
+  },
+);
 
 const tool = {
-  id: "rotate",
-  name: "Rotate Pages",
-  description: "Rotate pages in any direction",
+  id: "page-numbers",
+  name: "Add Page Numbers",
+  description: "Number your PDF pages",
 };
 
-const possibleRotate = [
-  { name: "0°", value: 0 },
-  { name: "90°", value: 90 },
-  { name: "180°", value: 180 },
-  { name: "270°", value: 270 },
+const possiblePositions = [
+  { name: "Top-Left", value: "top-left" },
+  { name: "Top-Center", value: "top-center" },
+  { name: "Top-Right", value: "top-right" },
+  { name: "Bottom-Left", value: "bottom-left" },
+  { name: "Bottom-Center", value: "bottom-center" },
+  { name: "Bottom-Right", value: "bottom-right" },
 ];
 
 export default function Page() {
@@ -43,7 +48,9 @@ export default function Page() {
   // single file instead of array
   const [file, setFile] = useState<{ file: File; url: string } | null>(null);
 
-  const [selectedRotation, setSelectedRotation] = useState<number>(0);
+  const [selectedPosition, setSelectedPosition] = useState<string>(
+    possiblePositions[0].value,
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files[0]) return;
@@ -70,7 +77,7 @@ export default function Page() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Rotate Pdf</BreadcrumbPage>
+              <BreadcrumbPage>Add Page Numbers</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -105,22 +112,27 @@ export default function Page() {
                 <Upload className="text-purple-400 w-5 h-5" />
               </div>
               <h2 className="text-lg font-bold text-[#112636]">
-                Drop PDF To Rotate
+                Drop PDF To Add Page Numbers
               </h2>
               <p className="text-[#2f373e] text-xs">or click to browse</p>
             </CardContent>
           </Card>
         </div>
 
+        {file && (
+          <h2 className="mt-5 text-md md:text-lg lg:text-xl font-bold">
+            Positions:{" "}
+          </h2>
+        )}
+
         {/* Controls + Preview */}
         {file && (
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-            <div className="grid grid-cols-4 gap-4">
-              {possibleRotate.map((item) => (
+          <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 grid-rows-2 gap-4">
+              {possiblePositions.map((item) => (
                 <motion.button
                   key={item.name}
-                  value={item.value}
-                  onClick={() => setSelectedRotation(item.value)}
+                  onClick={() => setSelectedPosition(item.value)}
                   whileHover={{
                     boxShadow: "8px 8px 0 #111",
                     x: -2,
@@ -132,10 +144,11 @@ export default function Page() {
                   }}
                   transition={{ duration: 0.2 }}
                   className={`${
-                    selectedRotation === item.value
+                    selectedPosition === item.value
                       ? "bg-purple-500 text-white hover:bg-purple-500"
                       : "bg-white/50 text-black hover:bg-yellow-500"
-                  } text-lg font-bold rounded-full h-12 w-full shadow-[4px_4px_0_#111] border-2 border-black cursor-pointer`}
+                  } text-md md:text-lg font-bold rounded-full h-12 w-full shadow-[4px_4px_0_#111] border-2 border-black cursor-pointer
+                  `}
                 >
                   {item.name}
                 </motion.button>
@@ -145,7 +158,11 @@ export default function Page() {
             {/* Preview */}
             <div className="h-75 overflow-hidden rounded-md">
               {file && (
-                <PdfPreview url={file.url} rotation={selectedRotation} />
+                <PdfPreviewWithNumber
+                  url={file.url}
+                  rotation={0}
+                  position={selectedPosition}
+                />
               )}
             </div>
           </div>
@@ -164,9 +181,9 @@ export default function Page() {
               scale: 0.95,
             }}
             transition={{ duration: 0.2 }}
-            onClick={() => rotatePdf(file.file, selectedRotation)}
+            onClick={() => addPageNumbers(file.file, selectedPosition)}
           >
-            Rotate Pdf
+            Add Number & Download Pdf
           </motion.button>
         )}
       </div>
