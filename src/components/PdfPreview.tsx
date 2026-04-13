@@ -1,12 +1,20 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
-function PdfPreview({ url }: { url: string }) {
+function PdfPreview({ url, rotation = 0 }: { url: string, rotation: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const [width, setWidth] = useState(250);
+
+  useEffect(() => {
+    if (containerRef.current)
+      setWidth(containerRef.current.clientWidth)
+  }, []);
+  
   return (
     <div ref={containerRef} className="w-full overflow-hidden">
       <Document
@@ -19,7 +27,9 @@ function PdfPreview({ url }: { url: string }) {
       >
         <Page
           pageNumber={1}
-          width={containerRef.current?.clientWidth ?? 250} // controls size
+          width={width} // controls size
+          scale={1}
+          rotate={rotation}
           renderTextLayer={false}
           renderAnnotationLayer={false}
         />
