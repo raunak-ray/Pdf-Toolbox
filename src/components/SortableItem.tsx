@@ -51,7 +51,7 @@ export default function SortableItem({
     >
       {/* PDF Preview */}
       <div className="overflow-hidden w-full rounded-md cursor-grab active:cursor-grabbing">
-        <PdfPreview url={item.url} rotation={0}/>
+        <PdfPreview url={item.url} rotation={0} />
       </div>
 
       {/* Remove Button */}

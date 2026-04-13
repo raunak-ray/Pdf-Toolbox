@@ -115,40 +115,40 @@ export default function Page() {
         {/* Controls + Preview */}
         {file && (
           <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
-          <div className="grid grid-cols-4 gap-4">
-            {possibleRotate.map((item) => (
-              <motion.button
-                key={item.name}
-                value={item.value}
-                onClick={() => setSelectedRotation(item.value)}
-                whileHover={{
-                  boxShadow: "8px 8px 0 #111",
-                  x: -2,
-                  y: -2,
-                }}
-                whileTap={{
-                  scale: 0.95,
-                  boxShadow: "2px 2px 0 #111",
-                }}
-                transition={{ duration: 0.2 }}
-                className={`${
-                  selectedRotation === item.value
-                    ? "bg-purple-500 text-white hover:bg-purple-500"
-                    : "bg-white/50 text-black hover:bg-yellow-500"
-                } text-lg font-bold rounded-full h-12 w-full shadow-[4px_4px_0_#111] border-2 border-black cursor-pointer`}
-              >
-                {item.name}
-              </motion.button>
-            ))}
-          </div>
+            <div className="grid grid-cols-4 gap-4">
+              {possibleRotate.map((item) => (
+                <motion.button
+                  key={item.name}
+                  value={item.value}
+                  onClick={() => setSelectedRotation(item.value)}
+                  whileHover={{
+                    boxShadow: "8px 8px 0 #111",
+                    x: -2,
+                    y: -2,
+                  }}
+                  whileTap={{
+                    scale: 0.95,
+                    boxShadow: "2px 2px 0 #111",
+                  }}
+                  transition={{ duration: 0.2 }}
+                  className={`${
+                    selectedRotation === item.value
+                      ? "bg-purple-500 text-white hover:bg-purple-500"
+                      : "bg-white/50 text-black hover:bg-yellow-500"
+                  } text-lg font-bold rounded-full h-12 w-full shadow-[4px_4px_0_#111] border-2 border-black cursor-pointer`}
+                >
+                  {item.name}
+                </motion.button>
+              ))}
+            </div>
 
-          {/* Preview */}
-          <div className="h-75 overflow-hidden rounded-md">
-            {file && (
-              <PdfPreview url={file.url} rotation={selectedRotation} />
-            )}
+            {/* Preview */}
+            <div className="h-75 overflow-hidden rounded-md">
+              {file && (
+                <PdfPreview url={file.url} rotation={selectedRotation} />
+              )}
+            </div>
           </div>
-        </div>
         )}
 
         {/* Action Button */}

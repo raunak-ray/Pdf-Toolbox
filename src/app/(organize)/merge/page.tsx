@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { mergePdf } from "@/lib/pdfTools";
 import { Upload } from "lucide-react";
 import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 // dnd-kit imports
 import {
@@ -164,12 +165,21 @@ export default function Page() {
 
         {/* Merge Button */}
         {files.length > 0 && (
-          <button
-            className="mt-5 bg-purple-500 font-bold text-white shadow-[5px_5px_0_#111] border-2 border-black px-4 py-2 rounded-lg w-full md:w-auto"
+          <motion.button
+            className="mt-5 bg-purple-500 font-bold text-white shadow-[5px_5px_0_#111] border-2 border-black px-4 py-2 rounded-lg w-full md:w-auto cursor-pointer"
+            whileHover={{
+              x: 2,
+              y: 2,
+              boxShadow: "2px 2px 0 #111",
+            }}
+            whileTap={{
+              scale: 0.95,
+            }}
+            transition={{ duration: 0.2 }}
             onClick={() => mergePdf(files.map((item) => item.file))}
           >
             Merge Pdf
-          </button>
+          </motion.button>
         )}
       </div>
     </div>

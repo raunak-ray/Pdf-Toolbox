@@ -5,16 +5,15 @@ import { Document, Page, pdfjs } from "react-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
-function PdfPreview({ url, rotation = 0 }: { url: string, rotation: number }) {
+function PdfPreview({ url, rotation = 0 }: { url: string; rotation: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [width, setWidth] = useState(250);
 
   useEffect(() => {
-    if (containerRef.current)
-      setWidth(containerRef.current.clientWidth)
+    if (containerRef.current) setWidth(containerRef.current.clientWidth);
   }, []);
-  
+
   return (
     <div ref={containerRef} className="w-full overflow-hidden">
       <Document
