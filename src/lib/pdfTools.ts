@@ -171,3 +171,57 @@ export async function addWatermark(
 
   downloadAsPdf(pdfBytes, `${file.name.split(".")[0]}_watermarked.pdf`);
 }
+
+export async function splitPdf(
+  file: File,
+  options: { mode: "all" | "range"; start?: number; end?: number },
+) {
+  const pdfBuffer = await file.arrayBuffer();
+  const pdfBytes = await PDFDocument.load(pdfBuffer);
+
+  const totalPages = pdfBytes.getPageCount();
+
+  if (options.mode === "all") {
+    for (let i = 0; i <= totalPages; i++) {
+      const newPdf = await PDFDocument.create();
+
+      const [page] = await newPdf.copyPages(pdfBytes, [i]);
+      newPdf.addPage(page);
+
+      const bytes: Uint8Array = await newPdf.save();
+
+      downloadAsPdf(bytes, `${file.name.split(".")[0]}_page_${i + 1}.pdf`);
+    }
+
+    return;
+  }
+
+  if (options.mode === "range") {
+    let start = options.start || 1;
+    let end = options.end || 1;
+
+    if (start > end) {
+      [start, end] = [end, start];
+    }
+
+    if (start < 1) start = 1;
+    if (end > totalPages) end = totalPages;
+
+    const newPdf = await PDFDocument.create();
+
+    const pageIndices = [];
+
+    for (let i = start - 1; i < end; i++) pageIndices.push(i);
+
+    const pages = await newPdf.copyPages(pdfBytes, pageIndices);
+
+    pages.forEach((page) => newPdf.addPage(page));
+
+    const bytes: Uint8Array = await newPdf.save();
+
+    downloadAsPdf(
+      bytes,
+      `${file.name.split(".")[0]}_page_${start}_to_${end}.pdf`,
+    );
+  }
+}
