@@ -124,3 +124,50 @@ export async function addPageNumbers(file: File, position: string) {
 
   downloadAsPdf(newPdfBuffer, `${file.name.split(".")[0]}.pdf`);
 }
+
+export async function addWatermark(
+  file: File,
+  text = "Confidential",
+  opacity = 20,
+) {
+  const pdfBuffer = await file.arrayBuffer();
+  const pdfDoc = await PDFDocument.load(pdfBuffer);
+
+  const newPdf = await PDFDocument.create();
+  const font = await newPdf.embedFont(StandardFonts.Helvetica);
+
+  const pages = await newPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+
+  pages.forEach((page) => {
+    const { width, height } = page.getSize();
+
+    // ✅ Better responsive font size
+    const fontSize = Math.min(width, height) * 0.12;
+
+    const textWidth = font.widthOfTextAtSize(text, fontSize);
+    const textHeight = font.heightAtSize(fontSize);
+
+    // ✅ TRUE center (anchor fix for rotation)
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    const x = centerX - textWidth / 2;
+    const y = centerY - textHeight / 2;
+
+    page.drawText(text, {
+      x,
+      y,
+      size: fontSize,
+      font,
+      color: rgb(0.65, 0.65, 0.65),
+      rotate: degrees(45), // best visual balance
+      opacity: opacity / 100,
+    });
+
+    newPdf.addPage(page);
+  });
+
+  const pdfBytes = await newPdf.save();
+
+  downloadAsPdf(pdfBytes, `${file.name.split(".")[0]}_watermarked.pdf`);
+}
