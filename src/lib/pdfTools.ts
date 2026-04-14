@@ -1,3 +1,4 @@
+import page from "@/app/page";
 import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib";
 
 function downloadAsPdf(blob: Uint8Array, fileName: string) {
@@ -262,4 +263,23 @@ export async function extractPdfPages(file: File, pagesToExtract: number[]) {
   const bytes: Uint8Array = await newPdf.save();
 
   downloadAsPdf(bytes, `${file.name.split(".")[0]}_extracted.pdf`);
+}
+
+export async function reorderPdfPages(file: File, pages: number[]) {
+  const pdfBuffer = await file.arrayBuffer();
+  const pdfBytes = await PDFDocument.load(pdfBuffer);
+
+  const newPdf = await PDFDocument.create();
+
+  const pageIndices = pages.map((page) => page - 1);
+
+  const copiedPages = await newPdf.copyPages(pdfBytes, pageIndices);
+
+  copiedPages.forEach((page) => {
+    newPdf.addPage(page);
+  });
+
+  const bytes: Uint8Array = await newPdf.save();
+
+  downloadAsPdf(bytes, `${file.name.split(".")[0]}_reordered.pdf`);
 }
