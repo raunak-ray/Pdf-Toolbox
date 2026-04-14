@@ -283,3 +283,36 @@ export async function reorderPdfPages(file: File, pages: number[]) {
 
   downloadAsPdf(bytes, `${file.name.split(".")[0]}_reordered.pdf`);
 }
+
+export async function pdfToText(file: File) {
+  try {
+    const pdfjsLib = await import("pdfjs-dist")
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdfjsdist.pdf.worker.min.js";
+    const buffer = await file.arrayBuffer();
+
+    const pdf = await pdfjsLib.getDocument({
+      data: buffer,
+    }).promise;
+
+    let fullText = "";
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+
+      const content = await page.getTextContent();
+
+      const pageText = content.items
+        .map((item: any) => item.str)
+        .join(" ")
+        .replace(/\s+/g, " "); // clean spacing
+
+      fullText += `--- Page ${i} ---\n`;
+      fullText += pageText + "\n\n";
+    }
+
+    return fullText.trim();
+  } catch (error) {
+    console.error("PDF text extraction failed:", error);
+    return "Failed to extract text from PDF.";
+  }
+}
