@@ -244,3 +244,22 @@ export async function deletePdfPages(file: File, pagesToDelete: number[]) {
 
   downloadAsPdf(bytes, `${file.name.split(".")[0]}_deleted.pdf`);
 }
+
+export async function extractPdfPages(file: File, pagesToExtract: number[]) {
+  const pdfBuffer = await file.arrayBuffer();
+  const pdfBytes = await PDFDocument.load(pdfBuffer);
+
+  const newPdf = await PDFDocument.create();
+
+  const pages = await newPdf.copyPages(pdfBytes, pdfBytes.getPageIndices());
+
+  pages.forEach((page, index) => {
+    if (pagesToExtract.includes(index + 1)) {
+      newPdf.addPage(page);
+    }
+  });
+
+  const bytes: Uint8Array = await newPdf.save();
+
+  downloadAsPdf(bytes, `${file.name.split(".")[0]}_extracted.pdf`);
+}
