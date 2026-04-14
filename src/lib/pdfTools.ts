@@ -225,3 +225,22 @@ export async function splitPdf(
     );
   }
 }
+
+export async function deletePdfPages(file: File, pagesToDelete: number[]) {
+  const pdfBuffer = await file.arrayBuffer();
+  const pdfBytes = await PDFDocument.load(pdfBuffer);
+
+  const newPdf = await PDFDocument.create();
+
+  const pages = await newPdf.copyPages(pdfBytes, pdfBytes.getPageIndices());
+
+  pages.forEach((page, index) => {
+    if (!pagesToDelete.includes(index + 1)) {
+      newPdf.addPage(page);
+    }
+  });
+
+  const bytes: Uint8Array = await newPdf.save();
+
+  downloadAsPdf(bytes, `${file.name.split(".")[0]}_deleted.pdf`);
+}

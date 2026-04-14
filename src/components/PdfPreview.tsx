@@ -5,7 +5,15 @@ import { Document, Page, pdfjs } from "react-pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
-function PdfPreview({ url, rotation = 0 }: { url: string; rotation: number }) {
+function PdfPreview({
+  url,
+  rotation = 0,
+  page = 1,
+}: {
+  url: string;
+  rotation?: number;
+  page?: number;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [width, setWidth] = useState(250);
@@ -25,7 +33,7 @@ function PdfPreview({ url, rotation = 0 }: { url: string; rotation: number }) {
         }
       >
         <Page
-          pageNumber={1}
+          pageNumber={page}
           width={width} // controls size
           scale={1}
           rotate={rotation}
