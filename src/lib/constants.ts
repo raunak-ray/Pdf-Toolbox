@@ -134,34 +134,42 @@ export const allTools = categories.flatMap((c) => c.tools);
 export const faqData = [
   {
     question: "Are my PDFs ever uploaded to a server?",
-    answer: "Never. pdfuse is 100% client-side — your files are processed entirely within your browser using JavaScript. No data is ever sent to a server, stored in a database, or accessible by anyone. Your documents exist only on your own device."
+    answer:
+      "Never. pdfuse is 100% client-side — your files are processed entirely within your browser using JavaScript. No data is ever sent to a server, stored in a database, or accessible by anyone. Your documents exist only on your own device.",
   },
   {
     question: "Do I need to create an account?",
-    answer: "No account, no email, no sign-up of any kind. Open pdfuse and start using any tool instantly. We don't ask for personal information and we don't collect it."
+    answer:
+      "No account, no email, no sign-up of any kind. Open pdfuse and start using any tool instantly. We don't ask for personal information and we don't collect it.",
   },
   {
     question: "Is pdfuse really free — with no catch?",
-    answer: "Yes, genuinely. There are no premium plans, no \"free tier\" limits, no trial periods, and no paywalls anywhere on the site. Every tool is free to use as often as you need, forever."
+    answer:
+      'Yes, genuinely. There are no premium plans, no "free tier" limits, no trial periods, and no paywalls anywhere on the site. Every tool is free to use as often as you need, forever.',
   },
   {
     question: "How is this different from tools like ILovePDF or Smallpdf?",
-    answer: "Most online PDF tools upload your file to their servers to process it — which means your documents pass through someone else's infrastructure. pdfuse processes everything locally in your browser, so your files stay on your device at all times. No upload, no risk."
+    answer:
+      "Most online PDF tools upload your file to their servers to process it — which means your documents pass through someone else's infrastructure. pdfuse processes everything locally in your browser, so your files stay on your device at all times. No upload, no risk.",
   },
   {
     question: "Is there a file size limit?",
-    answer: "Since processing happens in your browser, performance depends on your device's memory. Most PDFs up to a few hundred MB work fine. Very large files may be slower on older or low-memory devices."
+    answer:
+      "Since processing happens in your browser, performance depends on your device's memory. Most PDFs up to a few hundred MB work fine. Very large files may be slower on older or low-memory devices.",
   },
   {
     question: "Which browsers does pdfuse support?",
-    answer: "pdfuse works on all modern browsers — Chrome, Firefox, Safari, and Edge. We recommend keeping your browser updated for the best experience."
+    answer:
+      "pdfuse works on all modern browsers — Chrome, Firefox, Safari, and Edge. We recommend keeping your browser updated for the best experience.",
   },
   {
     question: "Can I use pdfuse on my phone or tablet?",
-    answer: "Yes — pdfuse is fully responsive and works on mobile browsers. Some heavy operations are faster on desktop, but all tools are accessible on any device."
+    answer:
+      "Yes — pdfuse is fully responsive and works on mobile browsers. Some heavy operations are faster on desktop, but all tools are accessible on any device.",
   },
   {
     question: "Do you store or share my files?",
-    answer: "We have no ability to store or share your files because they never reach our servers. The entire PDF processing pipeline runs inside your browser tab. When you close the tab, your file data is gone from memory."
-  }
+    answer:
+      "We have no ability to store or share your files because they never reach our servers. The entire PDF processing pipeline runs inside your browser tab. When you close the tab, your file data is gone from memory.",
+  },
 ];
