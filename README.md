@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PDFkit 🧰
 
-## Getting Started
+A modern, privacy-first PDF toolkit to merge, split, edit, and convert PDFs directly in your browser.
 
-First, run the development server:
+No uploads. No tracking. Completely free.
+
+---
+
+## 🚀 Live Demo
+
+[Live Link](https://pdf-toolbox-six.vercel.app/)
+
+---
+
+## ✨ Features
+
+### 📂 Organize PDFs
+
+**Merge PDFs**
+
+<p align="center">
+  <img src="./public/demo/merge.png" width="600" />
+</p>
+
+**Split PDFs**
+
+<p align="center">
+  <img src="./public/demo/split.png" width="600" />
+</p>
+
+**Reorder Pages**
+
+<p align="center">
+  <img src="./public/demo/reorder.png" width="600" />
+</p>
+
+**Delete Pages**
+
+<p align="center">
+  <img src="./public/demo/delete.png" width="600" />
+</p>
+
+**Extract Pages**
+
+<p align="center">
+  <img src="./public/demo/extract.png" width="600" />
+</p>
+
+---
+
+### ✏️ Edit PDFs
+
+**Add Page Numbers**
+
+<p align="center">
+  <img src="./public/demo/pageNumber.png" width="600" />
+</p>
+
+**Add Watermark**
+
+<p align="center">
+  <img src="./public/demo/watermark.png" width="600" />
+</p>
+
+---
+
+### 🔄 Convert Files
+
+**PDF → Text**
+
+<p align="center">
+  <img src="./public/demo/pdfText.png" width="600" />
+</p>
+
+**Images → PDF**
+
+<p align="center">
+  <img src="./public/demo/imagesPdf.png" width="600" />
+</p>
+
+---
+
+## 🔐 Privacy
+
+All processing happens directly in your browser.
+
+* No file uploads
+* No server storage
+* No data tracking
+
+Your files never leave your device.
+
+---
+
+## ⚡ How It Works
+
+1. Upload your PDF
+2. Select a tool
+3. Process instantly in browser
+4. Download your file
+
+---
+
+## 🛠️ Tech Stack
+
+* Next.js
+* React
+* Tailwind CSS
+* Framer Motion
+* Lucide Icons
+
+---
+
+## ⚙️ Getting Started
 
 ```bash
+git clone https://github.com/raunak-ray/PDFKit.git
+cd PDFKit
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+/app          → Pages & routing  
+/components   → UI components  
+/lib          → Tools & constants  
+/public       → Assets  
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔮 Future Improvements
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* PDF → Word conversion
+* OCR support
+* Batch processing
+* Performance optimizations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## ⭐ Support
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+If you find this useful, give it a star ⭐
