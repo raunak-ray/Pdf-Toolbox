@@ -283,3 +283,82 @@ export async function reorderPdfPages(file: File, pages: number[]) {
 
   downloadAsPdf(bytes, `${file.name.split(".")[0]}_reordered.pdf`);
 }
+
+export async function pdfToText(file: File) {
+  try {
+    const pdfjsLib = await import("pdfjs-dist");
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdfjsdist.pdf.worker.min.js";
+    const buffer = await file.arrayBuffer();
+
+    const pdf = await pdfjsLib.getDocument({
+      data: buffer,
+    }).promise;
+
+    let fullText = "";
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+
+      const content = await page.getTextContent();
+
+      const pageText = content.items
+        .map((item: any) => item.str)
+        .join(" ")
+        .replace(/\s+/g, " "); // clean spacing
+
+      fullText += `--- Page ${i} ---\n`;
+      fullText += pageText + "\n\n";
+    }
+
+    return fullText.trim();
+  } catch (error) {
+    console.error("PDF text extraction failed:", error);
+    return "Failed to extract text from PDF.";
+  }
+}
+
+export async function imagesToPdf(files: File[]) {
+  if (!files.length) return;
+
+  const pdfDoc = await PDFDocument.create();
+
+  const A4_WIDTH = 595.28;
+  const A4_HEIGHT = 841.89;
+
+  for (const file of files) {
+    const bytes = await file.arrayBuffer();
+
+    let image;
+    if (file.type === "image/png") {
+      image = await pdfDoc.embedPng(bytes);
+    } else {
+      image = await pdfDoc.embedJpg(bytes);
+    }
+
+    const imgWidth = image.width;
+    const imgHeight = image.height;
+
+    // SCALE TO FIT (maintain aspect ratio)
+    const scale = Math.min(A4_WIDTH / imgWidth, A4_HEIGHT / imgHeight);
+
+    const scaledWidth = imgWidth * scale;
+    const scaledHeight = imgHeight * scale;
+
+    // CENTER IMAGE
+    const x = (A4_WIDTH - scaledWidth) / 2;
+    const y = (A4_HEIGHT - scaledHeight) / 2;
+
+    const page = pdfDoc.addPage([A4_WIDTH, A4_HEIGHT]);
+
+    page.drawImage(image, {
+      x,
+      y,
+      width: scaledWidth,
+      height: scaledHeight,
+    });
+  }
+
+  const pdfBytes = await pdfDoc.save();
+
+  downloadAsPdf(pdfBytes, "images.pdf");
+}

@@ -4,9 +4,21 @@ import { Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
-import { categories } from "@/lib/constants";
+import { categories, faqData } from "@/lib/constants";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 function page() {
+  const scrollToTools = () => {
+    const section = document.getElementById("tools");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <main className="flex-1 dot-pattern">
       <div className="max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto px-4 py-6 md:py-10 relative">
@@ -34,7 +46,7 @@ function page() {
           transition={{ duration: 0.8 }}
         />
 
-        <div className="flex flex-col items-center justify-center gap-5 md:gap-8 lg:gap-12 mt-8 md:mt-12 relative">
+        <div className="flex flex-col items-center justify-center gap-4 md:gap-6 lg:gap-8 mt-8 md:mt-12 relative">
           {/* Badge */}
           <motion.div
             className="flex items-center gap-2 px-4 py-2 bg-yellow-600/90 text-white rounded-full border-2 border-black shadow-pop"
@@ -69,6 +81,22 @@ function page() {
             All the tools you need to work with PDFs — right in your browser.
             Nothing uploaded, nothing stored.
           </motion.p>
+
+          <motion.button
+            onClick={scrollToTools}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+            whileHover={{
+              x: 2,
+              y: 2,
+              boxShadow: "2px 2px 0 #111",
+            }}
+            whileTap={{ scale: 0.95 }}
+            className="mt-4 px-6 py-3 bg-[#975ff1] text-white font-bold rounded-xl border-2 border-black shadow-[4px_4px_0_#111] cursor-pointer text-sm md:text-lg"
+          >
+            Explore Tools ↓
+          </motion.button>
         </div>
 
         <motion.svg
@@ -89,7 +117,10 @@ function page() {
         </motion.svg>
       </div>
 
-      <div className="mt-5 max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto px-4 py-6 md:py-10 relative">
+      <div
+        className="mt-5 max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto px-4 py-6 md:py-10 relative"
+        id="tools"
+      >
         {categories.map((category) => (
           <div key={category.name} className="mb-10">
             {/* Category Header */}
@@ -182,6 +213,31 @@ function page() {
             </motion.div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-5 max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto px-4 py-6 md:py-10 relative">
+        <div className="flex flex-col gap-4 items-center justify-center">
+          <h2 className="text-md md:text-xl lg:text-3xl font-bold text-[#131f27]">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-sm md:tex-md lg:text-lg text-[#252729bd]">
+            Quick answers about PDFkit, security, and how it works.
+          </p>
+        </div>
+        <div className="mt-5 flex flex-col items-center justify-center gap-4 max-w-lg md:max-w-xl mx-auto">
+          <Accordion type="single" collapsible defaultValue="item-0">
+            {faqData.map((faq, index) => (
+              <AccordionItem
+                key={`faq-${index}`}
+                value={`item-${index}`}
+                className="bg-white mb-4 px-4 py-1 border-black border-2 shadow-[4px_4px_0_#111] rounded-xl"
+              >
+                <AccordionTrigger>{faq.question}</AccordionTrigger>
+                <AccordionContent>{faq.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
       </div>
     </main>
   );

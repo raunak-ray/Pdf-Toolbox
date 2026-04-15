@@ -13,7 +13,7 @@ function Footer() {
       className="w-full bg-white border-t-2 border-[#e1e7ef] shadow-2xs"
     >
       <motion.div
-        className="max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto px-4 py-3 grid grid-cols-2 md:grid-cols-4 gap-6"
+        className="max-w-lg md:max-w-2xl lg:max-w-5xl mx-auto px-4 py-3 grid grid-cols-3 gap-2 md:gap-10"
         initial="hidden"
         animate="show"
         variants={{
