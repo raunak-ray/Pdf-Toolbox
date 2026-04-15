@@ -51,7 +51,8 @@ export default function Navbar() {
           className="rounded-xl"
         >
           <Link
-            href="/"
+            href="https://github.com/raunak-ray"
+            target="_blank"
             aria-label="GitHub Repository"
             className="flex items-center gap-2 px-4 py-2 bg-[#1a293c] text-white border-2 border-black rounded-xl"
           >
