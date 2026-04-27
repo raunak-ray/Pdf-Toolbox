@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://pdf-toolbox-six.vercel.app
+
+# Sitemaps
+Sitemap: https://pdf-toolbox-six.vercel.app/sitemap.xml
